@@ -50,17 +50,25 @@ elf_dump(char *bin)
 
 	assert(sizeof(struct elf_prog_header) == h->prog_headers_sz);
 
+	printf("flags key for the following: x = 1, w = 2, r = 4, rw = 6, xr = 5\n");
+	/*
+	 * Note this careful casting. We did the math on the `file` as
+	 * know know it is a char *, thus addition works as we'd want
+	 * (1 byte at a time). Then, once we have our desired address,
+	 * we cast it to the type we want to then access it with.
+	 */
 	ph = (struct elf_prog_header *)(file + h->prog_header_offset);
 	for (i = 0; i < h->num_prog_headers; i++) {
-		if (ph[i].type != ELF_TYPE_LOADABLE) continue; /* is this not loadable memory? Ignore! */
-		printf("program header flags %x, offset %lx, size 0x%lx\n",
+		/* Is this not loadable memory? Ignore! */
+		if (ph[i].type != ELF_TYPE_LOADABLE) continue;
+		printf("\tprogram header flags %x, offset %lx, size 0x%lx\n",
 		       ph[i].flags, ph[i].file_offset, ph[i].size);
-		printf("flags key: x = 1, w = 2, r = 4, rw = 6, xr = 5\n");
 
+		/* We only want memory that is RW */
 		if (ph[i].flags != (ELF_FLAG_READABLE | ELF_FLAG_WRITABLE)) continue;
 
-		printf("Here we must boldly go!\nSeek out the 0xDEADBEEF, and find the answer!\n"
-			"We know its offset into the memory, the size of the section, and we must seek out the knowledge flanked by 0xDEADBEEF.\n");
+		printf("Here we must boldly go forward and seek out the 0xDEADBEEF to find the answer to all!\n"
+			"We know this section's offset into the memory, the size of the section, and we must seek out the knowledge flanked on both sides by 0xDEADBEEF.\n");
 	}
 
 	printf("\n");

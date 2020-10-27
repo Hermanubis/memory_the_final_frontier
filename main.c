@@ -1,6 +1,3 @@
-#define SCANELF 1
-//#define FILEDUMP 1
-
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -32,12 +29,11 @@ main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-#ifdef FILEDUMP
-	print_file(argv[1]);
-#endif
-#ifdef SCANELF
-	elf_dump(argv[1]);
-#endif
+	if (file_is_executable(argv[1])) {
+		elf_dump(argv[1]);
+	} else {
+		print_file(argv[1]);
+	}
 
 	return 0;
 }

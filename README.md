@@ -27,11 +27,9 @@ $ ./bin README.md
 ```
 
 But first, we must voyage to the planet of the elfs.
-Update `main.c` by plotting a course to `SCANELF`.
 Starting survey!
 
 ```
-$ make
 $ ./bin bin
 ```
 
@@ -48,9 +46,13 @@ Behold in glory: the Elf starsystem!
 
 The Elf file format has a header at the start of the file that has a well-formed and defined structure.
 We have encoded this strange beast in `elf_dump.c`.
-Scattered throughout the elf are a number of `offset`s.
-These specify an `offset` into the file (i.e. from the start of the file).
+Scattered throughout the elf format are a number of `offset`s.
+These specify an `offset` into the binary file (i.e. from the start of the file).
 Observe how we have already used the elf header to find the **Program Headers**.
+
+```
+./bin bin
+```
 
 See what those look like with the professional scanning tools:
 
@@ -62,16 +64,25 @@ We can see the address at which the binary is supposed to start execution (`star
 These are the ranges of memory that are loaded by the OS into memory to execute the program.
 Notice again the `off` "offsets" that represent the offset into the file/memory at which that section's memory exists!
 
-Note the symmetry between the `objdump` output and that of `./bin bin`.
-The program headers line up!
+**Q1:** What is the "Entry address" parsed out by `./bin bin`? What code (see `objdump -S bin`) does this correspond to?
+**Q2:** In what ways is there symmetry in the output between the `objdump` output and that of `./bin bin`?
 
 ## Finding the Key to Everything!
 
-We have every indication that within a `LOADABLE` section that includes both readable and writeable data (see objdump output), they to everything is awaiting discovery!
+We have every indication that the key to everything is awaiting discovery within a `LOADABLE` section -- which means that the section should get loaded into memory when we execute the program -- that includes both readable and writeable data (see `objdump` output)!
 
-In `elf_dump`, we have found the appropriate section.
+**Q3:** What does this section hold? Make an educated guess.
+
+In `elf_dump`, we have found the appropriate section, and where it is in the binary.
 What we must now do, is find where `0xDEADBEEF` exists in memory in the loadable, read/write section.
+Note that `0xDEADBEEF` is 4 bytes large (e.g. `uint32_t`).
 Once we find it, we must find the second instance of `0xDEADBEEF`.
 Between the two flanking `0xDEADBEEF`s is the key to everything.
 
+```
+0xDEADBEEF the secrets that you must retrieve lie here in memory 0xDEADBEEF
+```
+
 Go forth and find the key to everything, and report back for the greater good of humanity!
+
+**Q4:** What is the answer to life, the universe, and everything?
