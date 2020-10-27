@@ -43,6 +43,9 @@ But what is it doing?
 Now we dive deep into the exotic, yet exceedingly common [Elf format](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format).
 It is the format for each of our programs and is a well-defined standard.
 
+Behold in glory: the Elf starsystem!
+![](https://upload.wikimedia.org/wikipedia/commons/e/e4/ELF_Executable_and_Linkable_Format_diagram_by_Ange_Albertini.png)
+
 The Elf file format has a header at the start of the file that has a well-formed and defined structure.
 We have encoded this strange beast in `elf_dump.c`.
 Scattered throughout the elf are a number of `offset`s.
