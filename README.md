@@ -64,14 +64,14 @@ We can see the address at which the binary is supposed to start execution (`star
 These are the ranges of memory that are loaded by the OS into memory to execute the program.
 Notice again the `off` "offsets" that represent the offset into the file/memory at which that section's memory exists!
 
-**Q1:** What is the "Entry address" parsed out by `./bin bin`? What code (see `objdump -S bin`) does this correspond to?
-**Q2:** In what ways is there symmetry in the output between the `objdump` output and that of `./bin bin`?
+- **Q1:** What is the "Entry address" parsed out by `./bin bin`? What code (see `objdump -S bin`) does this correspond to?
+- **Q2:** In what ways is there symmetry in the output between the `objdump` output and that of `./bin bin`?
 
 ## Finding the Key to Everything!
 
 We have every indication that the key to everything is awaiting discovery within a `LOADABLE` section -- which means that the section should get loaded into memory when we execute the program -- that includes both readable and writeable data (see `objdump` output)!
 
-**Q3:** What does this section hold? Make an educated guess.
+- **Q3:** What does this section hold? Make an educated guess.
 
 In `elf_dump`, we have found the appropriate section, and where it is in the binary.
 What we must now do, is find where `0xDEADBEEF` exists in memory in the loadable, read/write section.
@@ -85,4 +85,4 @@ Between the two flanking `0xDEADBEEF`s is the key to everything.
 
 Go forth and find the key to everything, and report back for the greater good of humanity!
 
-**Q4:** What is the answer to life, the universe, and everything?
+- **Q4:** What is the answer to life, the universe, and everything?
